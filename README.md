@@ -1,63 +1,322 @@
 # BOB IDE — Sovereign Development Environment
 
-**Full-featured IDE with real terminal, code execution, and artifact management.**
+**Browser-based IDE with terminal, code editor, and real command execution. Ship from GitHub directly.**
 
-[![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
-
----
-
-## What It Is
-
-BOB IDE is a **complete development environment** designed to be powered by [sov-kernel-monster](https://github.com/SNAPKITTYWEST/sov-kernel-monster). It combines:
-
-- 🖥️ **Real Terminal** — bash, grep, curl, full command execution
-- 💻 **Code Editor** — Monaco editor (VS Code engine) with syntax highlighting
-- 📁 **File Browser** — Read/write files from the filesystem
-- 🤖 **AI Assistant** — IBM Granite + OpenRouter + WebLLM integration
-- 📦 **Artifact Manager** — Save, load, and manage WORM-sealed artifacts
-- ⚡ **Quantum Engine** — Vortex lattice visualization (optional)
-
-**Architecture:** Frontend (React + TypeScript) + Backend (Fastify server) → sov-kernel-monster quantum core
+[![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE) [![Deploy](https://img.shields.io/badge/Deploy-GitHub%20Pages-brightgreen)](https://snapkittywest.github.io/bob-ide/) [![Backend](https://img.shields.io/badge/Backend-Optional-orange)](https://github.com/SNAPKITTYWEST/bob-ide#backend-product)
 
 ---
 
-## Quick Start
+## 🌟 Two Products in One
 
-### Frontend (Development)
+```
+┌─────────────────────────────────────────────────────┐
+│  FRONTEND PRODUCT (GitHub Pages)                    │
+├─────────────────────────────────────────────────────┤
+│  • No installation                                  │
+│  • Works offline (Service Worker)                   │
+│  • Open: https://snapkittywest.github.io/bob-ide/  │
+│  • Terminal, Editor, XML Compiler in browser       │
+└─────────────────────────────────────────────────────┘
+                        ↕
+                  (Optional WebSocket)
+                        ↕
+┌─────────────────────────────────────────────────────┐
+│  BACKEND PRODUCT (Node.js + Fastify)                │
+├─────────────────────────────────────────────────────┤
+│  • Real command execution (bash, git, curl, etc.)   │
+│  • File system access                               │
+│  • Model inference (Granite, Nemotron)              │
+│  • WORM attestation + sealing                       │
+│  • Run locally: npm run start:backend               │
+└─────────────────────────────────────────────────────┘
+
+Frontend works without backend (UI only).
+Backend unlocks terminal execution (optional).
+```
+
+---
+
+## 🚀 Quick Start
+
+### Option 1: Use on GitHub Pages (No Installation)
+```
+1. Open: https://snapkittywest.github.io/bob-ide/
+2. Wait for boot sequence
+3. Terminal is live (limited to UI operations)
+4. To unlock full terminal: run backend locally
+```
+
+### Option 2: Run Locally (Full Features)
 ```bash
 git clone https://github.com/SNAPKITTYWEST/bob-ide.git
 cd bob-ide
-npm install
-npm run dev
-```
-Open http://localhost:5173
 
-### Backend (Terminal + File Operations)
-```bash
-cd backend
+# Terminal 1: Frontend
 npm install
 npm run dev
+# Opens http://localhost:5173/bob-ide/
+
+# Terminal 2: Backend (optional, for command execution)
+npm run start:backend
+# Starts on http://localhost:3000
+
+# Now terminal commands work: git status, curl, grep, etc.
 ```
-Backend runs on http://localhost:3000
+
+### Option 3: Push to GitHub, Auto-Deploy
+```bash
+# Edit code locally
+vim src/components/SovereignIDE.tsx
+
+# Commit
+git add -A
+git commit -m "feat: add new feature"
+
+# Push to GitHub → Auto-deploys to GitHub Pages
+git push origin main
+
+# Live in 2-5 minutes on: https://snapkittywest.github.io/bob-ide/
+```
 
 ---
 
-## Features
+## 🎯 Frontend Product
 
-### 🖥️ Terminal
-- **Real Shell Access** — bash, zsh, sh
-- **Command History** — persistent across sessions
-- **Quick Commands** — ls, pwd, uname, whoami (one-click)
-- **Output Streaming** — real-time command results
-- **Working Directory** — navigate with `cd`
-- **Environment Variables** — full env access
+**Deploy anywhere, no backend required.**
 
-**Supported Commands:**
-- `bash` / `sh` — shell scripts
-- `grep` — file searching (REST API: `/api/grep`)
-- `curl` — HTTP requests (REST API: `/api/curl`)
-- `ls`, `cat`, `echo`, `pwd`, `cd` — file operations
-- Any installed CLI tool (git, node, python, etc.)
+### Features
+- 📝 **Code Editor** — Monaco (VS Code engine) with syntax highlighting
+- 🖥️ **Terminal UI** — Omega Shell with guarded execution
+- 🔮 **XML Compiler** — Natural language → system prompts
+- 📁 **File Viewer** — Browse/view code (read-only without backend)
+- 🔗 **Git UI** — Git operations display (requires backend for execution)
+- ⚡ **Offline Mode** — Service Worker caches entire app
+
+### Entry Points
+- **React Version** (GitHub Pages): `https://snapkittywest.github.io/bob-ide/`
+- **Standalone Version** (zero deps): `app-release-1.0.html` (open locally)
+
+### Deployment
+```bash
+npm run build
+git push origin main
+# GitHub Actions auto-deploys dist/ to GitHub Pages
+```
+
+---
+
+## 🔌 Backend Product (Optional)
+
+**Unlock real terminal, git, and model inference.**
+
+### Features
+- 🖥️ **Real Terminal** — bash, sh, zsh execution
+- 📦 **Git Commands** — git status, add, commit, push, etc.
+- 🌐 **HTTP Requests** — curl, fetch, WebSocket
+- 🤖 **Model Inference** — Granite + Nemotron streaming
+- 💾 **File System** — Read/write files
+- 🔐 **WORM Sealing** — Attest operations to immutable chain
+
+### Supported Commands
+```
+bash              # Shell scripts
+grep              # File searching
+curl              # HTTP requests
+git               # Version control
+npm               # Package management
+python            # Python scripts
+cat, ls, pwd, cd  # File operations
+```
+
+### Run Backend
+```bash
+npm run start:backend
+# Starts on http://localhost:3000
+
+# API Endpoints:
+POST /api/execute           # Run commands
+POST /api/omega/run         # Omega shell
+POST /api/xml/compile       # XML compiler
+POST /api/xml/control-model # Model control
+WS /api/terminal/:id/ws     # Terminal streaming
+```
+
+### Optional: Replace with sov-kernel-monster
+Current backend will be replaced by [sov-kernel-monster](https://github.com/SNAPKITTYWEST/sov-kernel-monster):
+```typescript
+// Future: import { SovereignKernel } from 'sov-kernel-monster'
+const kernel = new SovereignKernel()
+kernel.mountTerminal(socketServer)
+kernel.wireGitDOS(expressServer)
+```
+
+---
+
+## 📡 Push to GitHub → Auto-Deploy Workflow
+
+### How It Works
+
+1. **Edit locally**
+   ```bash
+   npm run dev                    # Local dev server
+   ```
+
+2. **Commit changes**
+   ```bash
+   git add src/components/...
+   git commit -m "feat: new feature"
+   ```
+
+3. **Push to main**
+   ```bash
+   git push origin main
+   ```
+
+4. **GitHub Actions triggers** (automatic)
+   - Runs: `npm run build`
+   - Uploads `dist/` to GitHub Pages
+   - Deploys to: `https://snapkittywest.github.io/bob-ide/`
+   - Completes in 2-5 minutes
+
+5. **Verify live**
+   - Check: https://github.com/SNAPKITTYWEST/bob-ide/actions
+   - Open: https://snapkittywest.github.io/bob-ide/
+   - Done! ✅
+
+### Workflow File
+See: `.github/workflows/pages.yml`
+
+---
+
+## 📚 Documentation
+
+| Doc | Purpose |
+|-----|---------|
+| [USER_GUIDE_GITHUB_PAGES.md](USER_GUIDE_GITHUB_PAGES.md) | How to use BOB IDE on GitHub Pages |
+| [DEPLOYMENT_READY.md](DEPLOYMENT_READY.md) | Deployment architecture + backend setup |
+| [APPLE_PIVOT_PLAN.md](APPLE_PIVOT_PLAN.md) | Roadmap: React → Apple II + GitDOS |
+| [BOB_IDE_2.2_TOOLKIT_MAP.md](BOB_IDE_2.2_TOOLKIT_MAP.md) | All available frameworks (WOZ, Holy Agents, Mantra) |
+| [REDUNDANCY_CHECK.md](REDUNDANCY_CHECK.md) | Code audit (zero duplicate, 5.8K LOC) |
+
+---
+
+## 🏗️ Architecture
+
+### Frontend (React)
+```
+src/
+├── components/
+│   ├── shell/AppShell.tsx          # Main game/shell
+│   ├── ide/SovereignIDE.tsx        # Full IDE layout
+│   ├── terminal/OmegaShell.tsx     # Terminal panel
+│   ├── xml/XMLCompilerPanel.tsx    # XML compiler
+│   └── ...
+├── stores/                         # Zustand state management
+└── App.tsx                         # Entry point
+```
+
+### Backend (Node.js + Fastify)
+```
+backend/
+├── server.ts                       # Main HTTP server
+├── s-autocode-bridge.ts           # WebSocket + S-AUTOCODE protocol
+├── xml-compiler-bridge.ts         # XML compilation
+└── wasm.ts                        # WASM engine
+```
+
+### Standalone HTML
+```
+app-release-1.0.html               # Zero-dep IDE (691 lines)
+dist/index.html                    # Production React build
+```
+
+---
+
+## 🔧 Development
+
+### Setup
+```bash
+npm install
+npm run type-check    # TypeScript checks
+npm run build         # Production build
+npm run preview       # Test production build
+```
+
+### Local Development
+```bash
+# Terminal 1: Frontend dev server
+npm run dev
+
+# Terminal 2: Backend server
+npm run start:backend
+
+# Terminal 3: Test API
+curl http://localhost:3000/api/execute -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"cmd":"git status"}'
+```
+
+---
+
+## 🎯 Features Checklist
+
+| Feature | Frontend | Backend | Status |
+|---------|----------|---------|--------|
+| Terminal (read) | ✅ | — | Works offline |
+| Terminal (execute) | — | ✅ | Requires backend |
+| Code Editor | ✅ | — | Monaco editor |
+| File Browse | ✅ | — | Read-only |
+| Git UI | ✅ | ✅ | Full with backend |
+| XML Compiler | ✅ | — | Works offline |
+| WORM Sealing | ✅ | ✅ | On every operation |
+| Model Inference | ✅ | ✅ | Backend streaming |
+| Offline Support | ✅ | — | Service Worker |
+
+---
+
+## 📦 Build Output
+
+```
+dist/
+├── index.html (0.85 KB)           # Entry point
+├── manifest.webmanifest           # PWA metadata
+├── registerSW.js                  # Service Worker registration
+├── sw.js                          # Service Worker runtime
+└── assets/
+    ├── index-*.js (178 KB)        # React app bundle
+    ├── monaco-*.js (6.8 KB)       # Monaco code chunk
+    ├── monaco-*.css (116 KB)      # Editor styling
+    ├── index-*.css (8.9 KB)       # App styling
+    ├── codicon-*.ttf (77 KB)      # Icon font
+    └── (empty chunks for xterm, webllm - bundled elsewhere)
+
+Total: 424 KB (75 KB gzipped)
+Build time: 2.97 seconds
+```
+
+---
+
+## 🚀 Next: BOB IDE 2.2
+
+Coming soon: Single-file IDE with zero dependencies.
+
+- ✅ Apple II Universal Machine
+- ✅ GitDOS Framework  
+- ✅ WOZ Vault (code execution)
+- ✅ Holy Agents (agent framework)
+- ✅ Mantra Stream (real-time inference)
+
+See: [BOB_IDE_2.2_TOOLKIT_MAP.md](BOB_IDE_2.2_TOOLKIT_MAP.md)
+
+---
+
+## 📄 License
+
+MIT — See [LICENSE](LICENSE)
+
+---
+
+**Made with Bob** 🤖
 
 ### 📝 Editor
 - **Monaco Editor** — full VS Code engine
