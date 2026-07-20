@@ -1,205 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SNAPKITTY WEST · Sovereign Agentic Infrastructure</title>
-  <link rel="stylesheet" crossorigin href="/assets/index-Bs_KnvZG.css">
-<link rel="manifest" href="/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/registerSW.js"></script></head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BOB IDE</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0d0d0d;--bg2:#141414;--bg3:#1c1c1c;--bg4:#242424;--border:#2a2a2a;--accent:#0af;--accent2:#7c3aed;--text:#e0e0e0;--text2:#666;--red:#f43;--green:#0f0;--yellow:#fa0}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'SF Mono','Fira Code',monospace;overflow:hidden}
+#bar{height:36px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 14px;gap:8px}
+.dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.dr{background:#ff5f57}.dy{background:#febc2e}.dg{background:#28c840}
+#bar-title{flex:1;text-align:center;font-size:12px;color:var(--text2)}
+.pill{font-size:11px;padding:2px 10px;border-radius:4px;background:var(--bg4);border:1px solid var(--border);color:var(--accent);cursor:pointer}
+.pill:hover{border-color:var(--accent)}
+#gear{font-size:14px;cursor:pointer;color:var(--text2);padding:2px 6px}
+#gear:hover{color:var(--text)}
+#app{display:flex;height:calc(100vh - 58px)}
+#sb{width:200px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
+#sb-title{padding:9px 12px;font-size:10px;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase;border-bottom:1px solid var(--border)}
+#files{flex:1;overflow-y:auto;padding:4px 0}
+.fi{padding:5px 10px 5px 18px;font-size:12px;cursor:pointer;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:6px}
+.fi:hover{background:var(--bg3);color:var(--text)}
+.fi.on{background:var(--bg4);color:var(--accent);border-left:2px solid var(--accent);padding-left:16px}
+#new-f{margin:8px;padding:6px;background:transparent;border:1px solid var(--border);color:var(--text2);font-size:11px;cursor:pointer;border-radius:4px;font-family:inherit}
+#new-f:hover{border-color:var(--accent);color:var(--accent)}
+#main{flex:1;display:flex;flex-direction:column;min-width:0}
+#tabs{height:34px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:flex-end;overflow-x:auto;flex-shrink:0}
+.tab{height:32px;padding:0 12px;font-size:12px;display:flex;align-items:center;gap:5px;border-right:1px solid var(--border);cursor:pointer;color:var(--text2);white-space:nowrap;border-top:2px solid transparent}
+.tab:hover{color:var(--text);background:var(--bg3)}
+.tab.on{color:var(--text);background:var(--bg);border-top-color:var(--accent)}
+.cx{opacity:0;font-size:10px;padding:1px 2px}
+.tab:hover .cx,.tab.on .cx{opacity:1}
+.cx:hover{color:var(--red)}
+#split{flex:1;display:flex;min-height:0}
+#ed{flex:1;position:relative;min-width:0}
+#monaco{width:100%;height:100%}
+#ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;pointer-events:none}
+#ph h2{font-size:22px;font-weight:200;letter-spacing:4px;color:var(--text2)}
+#ph p{font-size:11px;color:var(--border)}
+#ai{width:300px;display:flex;flex-direction:column;flex-shrink:0;border-left:1px solid var(--border)}
+#ai-h{padding:8px 12px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+#ai-h span{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:1.5px}
+#ai-st{font-size:10px;padding:2px 7px;border-radius:3px;border:1px solid var(--border);background:var(--bg4)}
+#ai-st.load{color:var(--yellow);border-color:var(--yellow)}
+#ai-st.ok{color:var(--green);border-color:var(--green)}
+#ai-st.err{color:var(--red);border-color:var(--red)}
+#chat{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:8px}
+#chat::-webkit-scrollbar{width:3px}#chat::-webkit-scrollbar-thumb{background:var(--border)}
+.m{font-size:12px;line-height:1.65;word-break:break-word}
+.m.u{color:var(--accent)}.m.u::before{content:'> '}
+.m.b{color:var(--text)}.m.b::before{content:'◆ ';color:var(--accent2)}
+.m.s{color:var(--text2);font-style:italic;font-size:11px}
+.m code{background:var(--bg3);padding:1px 5px;border-radius:3px;font-family:inherit;font-size:11px}
+.m pre{background:var(--bg3);padding:8px 10px;border-radius:4px;margin-top:5px;overflow-x:auto;border-left:2px solid var(--accent2);font-size:11px}
+#inp-box{padding:8px;background:var(--bg2);border-top:1px solid var(--border);display:flex;gap:6px;flex-shrink:0}
+#inp{flex:1;background:var(--bg4);border:1px solid var(--border);color:var(--text);padding:6px 8px;font-size:12px;font-family:inherit;border-radius:4px;outline:none;resize:none;height:56px}
+#inp:focus{border-color:var(--accent)}
+#go{width:36px;background:var(--accent);border:none;color:#000;font-size:16px;font-weight:900;cursor:pointer;border-radius:4px;flex-shrink:0}
+#go:disabled{opacity:.35;cursor:not-allowed}
+#sbar{height:22px;background:var(--accent);display:flex;align-items:center;padding:0 12px;gap:14px;font-size:11px;color:#000;flex-shrink:0}
+#sbar span{opacity:.75}
+#pp{display:none;position:fixed;top:36px;right:48px;width:260px;background:var(--bg2);border:1px solid var(--border);z-index:200;box-shadow:0 10px 40px #0008}
+#pp.show{display:block}
+#pp h4{padding:9px 12px;font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:1.5px;border-bottom:1px solid var(--border)}
+.po{padding:10px 12px;cursor:pointer;border-bottom:1px solid var(--border)}
+.po:hover{background:var(--bg3)}.po:last-child{border-bottom:none}
+.po .pn{font-size:12px;color:var(--text)}.po .pd{font-size:11px;color:var(--text2);margin-top:2px}
+.po.on .pn{color:var(--accent)}
+#sp{display:none;position:fixed;top:36px;right:0;width:280px;bottom:22px;background:var(--bg2);border-left:1px solid var(--border);z-index:199;padding:16px;overflow-y:auto}
+#sp.show{display:block}
+#sp h4{font-size:12px;color:var(--text);margin-bottom:14px}
+.sg{margin-bottom:12px}
+.sg label{font-size:10px;color:var(--text2);display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.8px}
+.sg input,.sg select{width:100%;background:var(--bg4);border:1px solid var(--border);color:var(--text);padding:6px 8px;font-size:12px;font-family:inherit;border-radius:4px;outline:none}
+.sg input:focus,.sg select:focus{border-color:var(--accent)}
+.sv{width:100%;padding:8px;background:var(--accent);border:none;color:#000;font-size:12px;font-weight:bold;cursor:pointer;border-radius:4px;font-family:inherit;margin-top:4px}
+#prog{position:fixed;bottom:22px;left:0;right:0;height:2px;z-index:300;transition:opacity .6s}
+#pb{height:100%;background:var(--accent);width:0%;transition:width .25s}
+</style>
+</head>
 <body>
-    <!-- Animated background grid -->
-    <canvas id="transformer-grid"></canvas>
-    
-    <!-- Scanline overlay -->
-    <div class="scanlines"></div>
-    
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h1 class="glitch" data-text="SNAPKITTY WEST">SNAPKITTY WEST</h1>
-            <p class="subtitle">Sovereign AI Infrastructure Built From Agents, Proofs, Receipts, and Runtime Discipline.</p>
-            
-            <div class="hero-buttons">
-                <a href="https://github.com/SNAPKITTYWEST" class="btn btn-primary">View Repositories</a>
-                <a href="#agents" class="btn btn-secondary">Launch Dashboard</a>
-                <a href="https://github.com/SNAPKITTYWEST/snapkitty-redbook" class="btn btn-secondary">Read the Red Book</a>
-                <a href="#evidence" class="btn btn-accent">Evidence or Silence</a>
-            </div>
+<div id="bar">
+  <div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div>
+  <div id="bar-title">BOB IDE — Sovereign Source</div>
+  <div class="pill" id="prov-pill" onclick="togglePP()">WebLLM</div>
+  <div id="gear" onclick="toggleSP()">⚙</div>
+</div>
+<div id="app">
+  <div id="sb">
+    <div id="sb-title">Explorer</div>
+    <div id="files"></div>
+    <button id="new-f" onclick="newFile()">+ New File</button>
+  </div>
+  <div id="main">
+    <div id="tabs"></div>
+    <div id="split">
+      <div id="ed">
+        <div id="ph"><h2>BOB IDE</h2><p>Open or create a file</p></div>
+        <div id="monaco" style="display:none"></div>
+      </div>
+      <div id="ai">
+        <div id="ai-h"><span>AI Assistant</span><div id="ai-st" class="load">Loading</div></div>
+        <div id="chat"><div class="m s">BOB IDE — ask anything. Ctrl+Enter sends.</div></div>
+        <div id="inp-box">
+          <textarea id="inp" placeholder="Ask about your code..." disabled></textarea>
+          <button id="go" onclick="send()" disabled>↑</button>
         </div>
-    </section>
-
-    <!-- Agent Constellation -->
-    <section id="agents" class="agents-section">
-        <div class="container">
-            <h2 class="section-title">AGENT CONSTELLATION</h2>
-            <div class="agent-grid">
-                <!-- Agent cards will be generated by JavaScript -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Pipeline Section -->
-    <section class="pipeline-section">
-        <div class="container">
-            <h2 class="section-title">SOVEREIGN WORKFLOW</h2>
-            <div class="pipeline">
-                <div class="pipeline-step" data-step="1">
-                    <div class="step-icon">⚡</div>
-                    <div class="step-label">Prompt</div>
-                </div>
-                <div class="pipeline-arrow">→</div>
-                <div class="pipeline-step" data-step="2">
-                    <div class="step-icon">🛡️</div>
-                    <div class="step-label">Trust Deed Gate</div>
-                </div>
-                <div class="pipeline-arrow">→</div>
-                <div class="pipeline-step" data-step="3">
-                    <div class="step-icon">🔀</div>
-                    <div class="step-label">Agent Router</div>
-                </div>
-                <div class="pipeline-arrow">→</div>
-                <div class="pipeline-step" data-step="4">
-                    <div class="step-icon">✓</div>
-                    <div class="step-label">Proof / Policy Check</div>
-                </div>
-                <div class="pipeline-arrow">→</div>
-                <div class="pipeline-step" data-step="5">
-                    <div class="step-icon">⚙️</div>
-                    <div class="step-label">Execution</div>
-                </div>
-                <div class="pipeline-arrow">→</div>
-                <div class="pipeline-step" data-step="6">
-                    <div class="step-icon">🔍</div>
-                    <div class="step-label">CATCODE Screen</div>
-                </div>
-                <div class="pipeline-arrow">→</div>
-                <div class="pipeline-step" data-step="7">
-                    <div class="step-icon">🔒</div>
-                    <div class="step-label">WORM Seal</div>
-                </div>
-                <div class="pipeline-arrow">→</div>
-                <div class="pipeline-step" data-step="8">
-                    <div class="step-icon">📦</div>
-                    <div class="step-label">Public Artifact</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- System Stack -->
-    <section class="stack-section">
-        <div class="container">
-            <h2 class="section-title">SYSTEM STACK</h2>
-            <div class="stack-grid">
-                <div class="stack-tile">Rust / Tokio</div>
-                <div class="stack-tile">Elixir / BEAM</div>
-                <div class="stack-tile">Lean 4</div>
-                <div class="stack-tile">Prolog</div>
-                <div class="stack-tile">Ada Contracts</div>
-                <div class="stack-tile">Lisp Packets</div>
-                <div class="stack-tile">SUBLEQ / Autocode</div>
-                <div class="stack-tile">WORM SHA-256 Chain</div>
-                <div class="stack-tile">GitHub Pages</div>
-                <div class="stack-tile">AWS Bedrock</div>
-                <div class="stack-tile">Ollama Local</div>
-                <div class="stack-tile">ICP / Canister Layer</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Featured Projects -->
-    <section class="projects-section">
-        <div class="container">
-            <h2 class="section-title">FEATURED PROJECTS</h2>
-            <div class="projects-grid">
-                <div class="project-card">
-                    <h3>Bob-Orchestrator</h3>
-                    <p>Multi-agent coordination with WORM sealing</p>
-                    <span class="status-badge">ACTIVE</span>
-                    <a href="https://github.com/SNAPKITTYWEST/bob-orchestrator" class="project-link">View →</a>
-                </div>
-                <div class="project-card">
-                    <h3>sovereign-35 / FRANKENSTEIN</h3>
-                    <p>35B parameter sovereign model</p>
-                    <span class="status-badge">DEPLOYED</span>
-                    <a href="#" class="project-link">View →</a>
-                </div>
-                <div class="project-card">
-                    <h3>S-AUTOCODE</h3>
-                    <p>SUBLEQ emulator with self-modifying code detection</p>
-                    <span class="status-badge">ACTIVE</span>
-                    <a href="https://github.com/SNAPKITTYWEST/S-AUTOCODE" class="project-link">View →</a>
-                </div>
-                <div class="project-card">
-                    <h3>AXIOM Proof Assistant</h3>
-                    <p>Fortran type theory kernel + Rust checker</p>
-                    <span class="status-badge">BUILDING</span>
-                    <a href="#" class="project-link">View →</a>
-                </div>
-                <div class="project-card">
-                    <h3>PLASMA-MAMBA</h3>
-                    <p>State space model with plasma gate</p>
-                    <span class="status-badge">RESEARCH</span>
-                    <a href="#" class="project-link">View →</a>
-                </div>
-                <div class="project-card">
-                    <h3>SnapKitty Red Book</h3>
-                    <p>Constitutional documentation</p>
-                    <span class="status-badge">ACTIVE</span>
-                    <a href="https://github.com/SNAPKITTYWEST/snapkitty-redbook" class="project-link">View →</a>
-                </div>
-                <div class="project-card">
-                    <h3>AgentScope SIFT</h3>
-                    <p>Multi-agent simulation framework</p>
-                    <span class="status-badge">ACTIVE</span>
-                    <a href="#" class="project-link">View →</a>
-                </div>
-                <div class="project-card">
-                    <h3>Cartographer Agent</h3>
-                    <p>Legal / governance mapping</p>
-                    <span class="status-badge">ACTIVE</span>
-                    <a href="#" class="project-link">View →</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Evidence Bar -->
-    <section id="evidence" class="evidence-bar">
-        <div class="container">
-            <div class="evidence-items">
-                <div class="evidence-item">
-                    <span class="evidence-icon">Ω</span>
-                    <span class="evidence-text">EVIDENCE OR SILENCE</span>
-                </div>
-                <div class="evidence-item">
-                    <span class="evidence-icon">↺</span>
-                    <span class="evidence-text">WORM chain active</span>
-                </div>
-                <div class="evidence-item">
-                    <span class="evidence-icon">Ψ</span>
-                    <span class="evidence-text">SHA-256 receipts</span>
-                </div>
-                <div class="evidence-item">
-                    <span class="evidence-icon">Δ</span>
-                    <span class="evidence-text">Proof-gated runtime</span>
-                </div>
-                <div class="evidence-item">
-                    <span class="evidence-icon">Λ</span>
-                    <span class="evidence-text">Agent handoff sealed</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <p>SNAPKITTYWEST · the-49th-call · Bel Esprit d'Accord Trust · Evidence or Silence</p>
-            <p class="symbols">Ω ↺ Ψ Δ Λ Σ Φ α</p>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="sbar">
+  <span>BOB IDE v1.0</span><span id="s-lang">—</span><span id="s-prov">WebLLM</span>
+  <span style="margin-left:auto" id="s-cur">Ln 1, Col 1</span>
+</div>
+<div id="pp">
+  <h4>AI Provider</h4>
+  <div class="po on" onclick="setProv('webllm',this)"><div class="pn">WebLLM</div><div class="pd">Llama 3.2 1B in GPU · No API key</div></div>
+  <div class="po" onclick="setProv('openrouter',this)"><div class="pn">OpenRouter</div><div class="pd">Claude / GPT-4 / Llama · API key</div></div>
+  <div class="po" onclick="setProv('ollama',this)"><div class="pn">Ollama</div><div class="pd">Local models · ollama serve</div></div>
+</div>
+<div id="sp">
+  <h4>Settings</h4>
+  <div class="sg"><label>OpenRouter API Key</label><input type="password" id="ork" placeholder="sk-or-..."></div>
+  <div class="sg"><label>OpenRouter Model</label>
+    <select id="orm">
+      <option value="anthropic/claude-3-haiku">Claude 3 Haiku</option>
+      <option value="anthropic/claude-3.5-sonnet">Claude 3.5 Sonnet</option>
+      <option value="openai/gpt-4o-mini">GPT-4o Mini</option>
+      <option value="meta-llama/llama-3.1-8b-instruct">Llama 3.1 8B</option>
+      <option value="qwen/qwen-2.5-coder-32b-instruct">Qwen 2.5 Coder 32B</option>
+    </select>
+  </div>
+  <div class="sg"><label>Ollama URL</label><input type="text" id="ourl" value="http://localhost:11434"></div>
+  <div class="sg"><label>Ollama Model</label><input type="text" id="omod" value="llama3"></div>
+  <button class="sv" onclick="saveSP()">Save</button>
+</div>
+<div id="prog"><div id="pb"></div></div>
+<script>var require={paths:{vs:'https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs'}};</script>
+<script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.js"></script>
+<script type="module">
+const S={files:{},active:null,tabs:[],ed:null,mo:null,engine:null,prov:'webllm',busy:false};
+const INIT={'main.ts':`// BOB IDE\nfunction greet(name: string): string {\n  return \`Hello \${name}!\`;\n}\nconsole.log(greet('world'));\n`,'notes.md':`# Notes\n\nAsk the AI:\n- "Explain this code"\n- "Fix the bug"\n- "Rewrite in Python"\n\n**Ctrl+Enter** to send\n`,'sketch.py':`def fib(n):\n    a, b = 0, 1\n    for _ in range(n):\n        yield a\n        a, b = b, a+b\nprint(list(fib(10)))\n`};
+const EXT={ts:'typescript',tsx:'typescript',js:'javascript',jsx:'javascript',py:'python',rs:'rust',go:'go',hs:'haskell',fst:'fsharp',ml:'ocaml',md:'markdown',json:'json',html:'html',css:'css',sh:'shell',c:'c',cpp:'cpp'};
+const ICO={ts:'T',tsx:'R',js:'J',py:'P',rs:'R',go:'G',hs:'H',md:'M',json:'J',html:'H',css:'C'};
+const lang=n=>EXT[n.split('.').pop()?.toLowerCase()]||'plaintext';
+const icon=n=>ICO[n.split('.').pop()?.toLowerCase()]||'F';
+function msg(t,c){const d=document.createElement('div');d.className='m '+t;if(t==='b')d.innerHTML='◆ '+md(c);else if(t==='u')d.textContent=c;else d.innerHTML=c;document.getElementById('chat').appendChild(d);document.getElementById('chat').scrollTop=99999;return d;}
+function md(t){return t.replace(/```[\w]*\n?([\s\S]*?)```/g,(_,c)=>`<pre><code>${esc(c.trim())}</code></pre>`).replace(/`([^`\n]+)`/g,'<code>$1</code>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+window.openFile=function(name){if(!S.ed||!S.mo)return;S.active=name;if(!S.tabs.includes(name))S.tabs.push(name);document.getElementById('ph').style.display='none';document.getElementById('monaco').style.display='block';S.ed.setModel(S.mo.editor.createModel(S.files[name]??'',lang(name)));document.getElementById('s-lang').textContent=lang(name);renderFL();renderTabs();};
+window.newFile=function(){const n=prompt('File name:','untitled.ts');if(!n?.trim())return;S.files[n]='';renderFL();openFile(n);};
+window.closeTab=function(e,name){e.stopPropagation();S.tabs=S.tabs.filter(t=>t!==name);if(S.active===name){S.active=S.tabs[S.tabs.length-1]??null;if(S.active)openFile(S.active);else{document.getElementById('ph').style.display='flex';document.getElementById('monaco').style.display='none';}}renderTabs();};
+function renderFL(){const el=document.getElementById('files');el.innerHTML='';Object.keys(S.files).sort().forEach(n=>{const d=document.createElement('div');d.className='fi'+(n===S.active?' on':'');d.innerHTML=`<span style="font-size:10px;opacity:.5">${icon(n)}</span><span style="overflow:hidden;text-overflow:ellipsis">${n}</span>`;d.onclick=()=>openFile(n);el.appendChild(d);});}
+function renderTabs(){const el=document.getElementById('tabs');el.innerHTML='';S.tabs.forEach(n=>{const t=document.createElement('div');t.className='tab'+(n===S.active?' on':'');t.innerHTML=`${n} <span class="cx" onclick="closeTab(event,'${n.replace(/'/g,"\\'")}')">x</span>`;t.onclick=()=>openFile(n);el.appendChild(t);});}
+require(['vs/editor/editor.main'],function(mo){
+  S.mo=mo;
+  mo.editor.defineTheme('bob',{base:'vs-dark',inherit:true,rules:[{token:'comment',foreground:'444444',fontStyle:'italic'},{token:'keyword',foreground:'00aaff'},{token:'string',foreground:'ce9178'},{token:'number',foreground:'b5cea8'},{token:'type',foreground:'4ec9b0'}],colors:{'editor.background':'#0d0d0d','editor.foreground':'#e0e0e0','editor.lineHighlightBackground':'#141414','editorLineNumber.foreground':'#2a2a2a','editorLineNumber.activeForeground':'#00aaff','editor.selectionBackground':'#1a3a5a','editorCursor.foreground':'#00aaff'}});
+  S.ed=mo.editor.create(document.getElementById('monaco'),{theme:'bob',fontSize:13,fontFamily:"'SF Mono','Fira Code','Consolas',monospace",fontLigatures:true,lineHeight:20,minimap:{enabled:false},scrollbar:{verticalScrollbarSize:5,horizontalScrollbarSize:5},renderLineHighlight:'line',cursorBlinking:'smooth',smoothScrolling:true,padding:{top:14,bottom:14},automaticLayout:true,bracketPairColorization:{enabled:true}});
+  S.ed.onDidChangeCursorPosition(e=>{document.getElementById('s-cur').textContent=`Ln ${e.position.lineNumber}, Col ${e.position.column}`;});
+  S.ed.onDidChangeModelContent(()=>{if(S.active)S.files[S.active]=S.ed.getValue();});
+  S.ed.addCommand(mo.KeyMod.CtrlCmd|mo.KeyCode.Enter,send);
+  S.ed.addCommand(mo.KeyMod.CtrlCmd|mo.KeyCode.KeyS,()=>{if(S.active){S.files[S.active]=S.ed.getValue();msg('s','Saved '+S.active);}});
+  S.ed.addCommand(mo.KeyMod.CtrlCmd|mo.KeyCode.KeyN,newFile);
+  Object.assign(S.files,INIT);renderFL();openFile('main.ts');
+});
+async function initLLM(){
+  const st=document.getElementById('ai-st'),pb=document.getElementById('pb');
+  if(!navigator.gpu){st.textContent='No WebGPU';st.className='err';msg('s','WebGPU unavailable. Use OpenRouter or Ollama in settings.');unlock();return;}
+  try{
+    const{CreateMLCEngine}=await import('https://esm.run/@mlc-ai/web-llm@0.2.73');
+    msg('s','Loading Llama 3.2 1B into GPU... (~700MB, cached after first load)');
+    S.engine=await CreateMLCEngine('Llama-3.2-1B-Instruct-q4f16_1-MLC',{initProgressCallback:p=>{const pct=Math.round((p.progress||0)*100);pb.style.width=pct+'%';st.textContent=pct+'%';}});
+    pb.style.width='100%';setTimeout(()=>{document.getElementById('prog').style.opacity='0';},800);
+    st.textContent='Ready';st.className='ok';msg('s','Llama 3.2 1B ready. Ask anything about your code.');unlock();
+  }catch(e){st.textContent='Failed';st.className='err';msg('s','WebLLM failed: '+e.message+'. Use OpenRouter in settings.');unlock();}
+}
+function unlock(){document.getElementById('inp').disabled=false;document.getElementById('go').disabled=false;}
+window.send=async function(){
+  const inp=document.getElementById('inp'),txt=inp.value.trim();
+  if(!txt||S.busy)return;
+  inp.value='';msg('u',txt);S.busy=true;document.getElementById('go').disabled=true;
+  const code=S.ed?S.ed.getValue().slice(0,2000):'';
+  const sys=`You are BOB, an expert AI coding assistant. Current file (${S.active||'untitled'}):\n\`\`\`\n${code}\n\`\`\`\nBe concise. Use code blocks.`;
+  try{
+    if(S.prov==='webllm'&&S.engine){
+      const div=msg('b','');let out='';
+      const stream=await S.engine.chat.completions.create({messages:[{role:'system',content:sys},{role:'user',content:txt}],stream:true,max_tokens:600});
+      for await(const c of stream){out+=(c.choices[0]?.delta?.content||'');div.innerHTML='◆ '+md(out);document.getElementById('chat').scrollTop=99999;}
+    }else if(S.prov==='openrouter'){
+      const key=localStorage.getItem('ork')||'';if(!key){msg('s','Add OpenRouter key in settings');S.busy=false;unlock();return;}
+      const r=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model:localStorage.getItem('orm')||'anthropic/claude-3-haiku',messages:[{role:'system',content:sys},{role:'user',content:txt}],stream:true})});
+      const reader=r.body.getReader(),dec=new TextDecoder(),div=msg('b','');let out='';
+      while(true){const{done,value}=await reader.read();if(done)break;for(const line of dec.decode(value).split('\n')){if(!line.startsWith('data: '))continue;const j=line.slice(6);if(j==='[DONE]')continue;try{out+=(JSON.parse(j).choices?.[0]?.delta?.content||'');div.innerHTML='◆ '+md(out);document.getElementById('chat').scrollTop=99999;}catch{}}}
+    }else if(S.prov==='ollama'){
+      const r=await fetch((localStorage.getItem('ourl')||'http://localhost:11434')+'/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:localStorage.getItem('omod')||'llama3',messages:[{role:'system',content:sys},{role:'user',content:txt}],stream:true})});
+      const reader=r.body.getReader(),dec=new TextDecoder(),div=msg('b','');let out='';
+      while(true){const{done,value}=await reader.read();if(done)break;try{out+=(JSON.parse(dec.decode(value)).message?.content||'');div.innerHTML='◆ '+md(out);document.getElementById('chat').scrollTop=99999;}catch{}}
+    }else msg('s','Select a provider in settings.');
+  }catch(e){msg('s','Error: '+e.message);}
+  S.busy=false;unlock();
+};
+document.getElementById('inp').addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();send();}});
+window.setProv=function(p,el){S.prov=p;document.getElementById('pp').classList.remove('show');document.querySelectorAll('.po').forEach(x=>x.classList.remove('on'));el.classList.add('on');const L={webllm:'WebLLM',openrouter:'OpenRouter',ollama:'Ollama'};document.getElementById('prov-pill').textContent=L[p];document.getElementById('s-prov').textContent=L[p];if(p!=='webllm')unlock();};
+window.togglePP=function(){document.getElementById('pp').classList.toggle('show');document.getElementById('sp').classList.remove('show');};
+window.toggleSP=function(){document.getElementById('sp').classList.toggle('show');document.getElementById('pp').classList.remove('show');document.getElementById('ork').value=localStorage.getItem('ork')||'';document.getElementById('orm').value=localStorage.getItem('orm')||'anthropic/claude-3-haiku';document.getElementById('ourl').value=localStorage.getItem('ourl')||'http://localhost:11434';document.getElementById('omod').value=localStorage.getItem('omod')||'llama3';};
+window.saveSP=function(){['ork','orm','ourl','omod'].forEach(k=>localStorage.setItem(k,document.getElementById(k).value));document.getElementById('sp').classList.remove('show');msg('s','Settings saved');};
+document.addEventListener('click',e=>{if(!e.target.closest('#pp')&&!e.target.closest('#prov-pill'))document.getElementById('pp').classList.remove('show');});
+initLLM();
+</script>
 </body>
 </html>
