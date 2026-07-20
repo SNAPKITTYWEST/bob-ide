@@ -1,0 +1,159 @@
+.settings-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--bg-editor);
+  color: var(--text-primary);
+}
+
+.settings-header {
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.settings-header h2 {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+.settings-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-4);
+}
+
+.settings-section {
+  margin-bottom: var(--space-6);
+  padding: var(--space-4);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+}
+
+.settings-section h3 {
+  margin: 0 0 var(--space-4) 0;
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.setting-item {
+  margin-bottom: var(--space-4);
+}
+
+.setting-item:last-child {
+  margin-bottom: 0;
+}
+
+.setting-item label {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.setting-item input[type="text"],
+.setting-item input[type="password"],
+.setting-item input[type="number"],
+.setting-item select {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-editor);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  font-family: var(--font-ui);
+}
+
+.setting-item input[type="text"]:focus,
+.setting-item input[type="password"]:focus,
+.setting-item input[type="number"]:focus,
+.setting-item select:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+}
+
+.setting-item input[type="checkbox"] {
+  margin-right: var(--space-2);
+}
+
+.setting-description {
+  margin: var(--space-2) 0 0 0;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.setting-description a {
+  color: var(--accent-primary);
+  text-decoration: none;
+}
+
+.setting-description a:hover {
+  text-decoration: underline;
+}
+
+.setting-description code {
+  padding: 2px 4px;
+  background: var(--bg-editor);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xs);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+
+.api-key-input {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.api-key-input input {
+  flex: 1;
+}
+
+.api-key-input button {
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: var(--text-base);
+}
+
+.api-key-input button:hover {
+  background: var(--bg-hover);
+}
+
+.danger-zone {
+  border-color: var(--git-deleted);
+}
+
+.danger-zone h3 {
+  color: var(--git-deleted);
+}
+
+.danger-button {
+  padding: var(--space-2) var(--space-4);
+  background: var(--git-deleted);
+  border: none;
+  border-radius: var(--radius-sm);
+  color: white;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity var(--duration-fast);
+}
+
+.danger-button:hover {
+  opacity: 0.9;
+}
+
+.danger-button:active {
+  opacity: 0.8;
+}
+
+/* Made with Bob */

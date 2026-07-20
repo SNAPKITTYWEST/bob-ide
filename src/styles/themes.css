@@ -1,0 +1,93 @@
+/* BOB IDE Theme System */
+
+[data-theme="light"] {
+  /* Backgrounds */
+  --bg-canvas: #F3F4F6;
+  --bg-workspace: #F8F9FA;
+  --bg-panel: rgba(255,255,255,0.82);
+  --bg-panel-solid: #FFFFFF;
+  --bg-elevated: #FFFFFF;
+  --bg-editor: #FCFCFD;
+  --bg-terminal: #111317;
+  --bg-hover: rgba(15,23,42,0.055);
+  --bg-selected: rgba(0,102,255,0.11);
+  --bg-active: rgba(0,102,255,0.16);
+
+  /* Text */
+  --text-primary: #17191D;
+  --text-secondary: #5B606A;
+  --text-tertiary: #858B96;
+  --text-disabled: #AEB3BC;
+  --text-inverse: #FFFFFF;
+
+  /* Borders */
+  --border-subtle: rgba(17,24,39,0.10);
+  --border-strong: rgba(17,24,39,0.18);
+
+  /* Accents */
+  --accent-primary: #0A6CFF;
+  --accent-secondary: #6E5AE6;
+  --success: #208A4D;
+  --warning: #B86A00;
+  --danger: #D93C3C;
+  --info: #1677C8;
+
+  /* Semantic */
+  --git-added: #208A4D;
+  --git-modified: #B86A00;
+  --git-deleted: #D93C3C;
+  --git-conflict: #6E5AE6;
+}
+
+[data-theme="dark"] {
+  /* Backgrounds */
+  --bg-canvas: #101114;
+  --bg-workspace: #131519;
+  --bg-panel: rgba(28,30,35,0.84);
+  --bg-panel-solid: #1B1D22;
+  --bg-elevated: #23262C;
+  --bg-editor: #15171B;
+  --bg-terminal: #0B0D10;
+  --bg-hover: rgba(255,255,255,0.055);
+  --bg-selected: rgba(66,139,255,0.18);
+  --bg-active: rgba(66,139,255,0.25);
+
+  /* Text */
+  --text-primary: #F4F5F7;
+  --text-secondary: #B6BBC5;
+  --text-tertiary: #7F8692;
+  --text-disabled: #555B65;
+  --text-inverse: #17191D;
+
+  /* Borders */
+  --border-subtle: rgba(255,255,255,0.09);
+  --border-strong: rgba(255,255,255,0.16);
+
+  /* Accents */
+  --accent-primary: #4A91FF;
+  --accent-secondary: #9B89FF;
+  --success: #46B878;
+  --warning: #E5A33D;
+  --danger: #F06161;
+  --info: #53A7E8;
+
+  /* Semantic */
+  --git-added: #46B878;
+  --git-modified: #E5A33D;
+  --git-deleted: #F06161;
+  --git-conflict: #9B89FF;
+}
+
+/* Default to dark theme */
+:root {
+  color-scheme: dark;
+}
+
+/* Respect system preference */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    color-scheme: light;
+  }
+}
+
+/* Made with Bob */

@@ -1,0 +1,20 @@
+/* Typography System */
+
+body {
+  font-family: var(--font-ui);
+  font-size: var(--font-14);
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+code, pre {
+  font-family: var(--font-code);
+}
+
+/* Made with Bob */
