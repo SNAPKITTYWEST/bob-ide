@@ -20,8 +20,23 @@ import {
   ModelControlRequest,
 } from './xml-compiler-bridge';
 
+// Import all 5 backend components (will be created by agents)
+// import { TerminalExecutor } from './executor';
+// import { LispVMBackend } from './lisp-vm';
+// import { MCPRouter } from './mcp-router';
+// import { AgentPool } from './agent-pool';
+// import { WORMChain } from './worm-chain';
+
 const app = Fastify({ logger: true });
 const wasmEngine = new WasmEngine();
+
+// INTEGRATION POINTS FOR 5 AGENTS
+// Each agent will populate these
+let terminalExecutor: any;
+let lispVM: any;
+let mcpRouter: any;
+let agentPool: any;
+let wormChain: any;
 
 // Register plugins
 await app.register(fastifyWs);
@@ -536,6 +551,46 @@ app.get<{ Params: { name: string } }>('/api/artifact/:name', async (req, reply) 
 });
 
 // =====================================================================
+// 5 INTEGRATION ENDPOINTS (Built by agents)
+// =====================================================================
+
+// 1. Terminal Executor
+app.post<{ Body: { command: string } }>('/api/execute', async (req) => {
+  if (!terminalExecutor) return { error: 'Terminal executor not ready' };
+  return terminalExecutor.execute(req.body.command);
+});
+
+// 2. LISP VM Backend
+app.post<{ Body: { sexpr: string; agent_id?: string } }>('/api/lisp/eval', async (req) => {
+  if (!lispVM) return { error: 'LISP VM not ready' };
+  return lispVM.eval(req.body.sexpr, req.body.agent_id);
+});
+
+// 3. MCP Router
+app.post<{ Body: { tool: string; function: string; args: any } }>('/api/mcp/call', async (req) => {
+  if (!mcpRouter) return { error: 'MCP router not ready' };
+  return mcpRouter.call(req.body.tool, req.body.function, req.body.args);
+});
+
+// 4. Agent Pool
+app.post<{ Body: { tasks: any[] } }>('/api/agents/execute', async (req) => {
+  if (!agentPool) return { error: 'Agent pool not ready' };
+  return agentPool.execute(req.body.tasks);
+});
+
+// 5. WORM Chain Info
+app.get('/api/worm/chain', async () => {
+  if (!wormChain) return { error: 'WORM chain not ready' };
+  return wormChain.getChain();
+});
+
+// WebSocket: Agent status streaming
+app.get<{ Params: { id: string } }>('/api/agents/:id/ws', { websocket: true }, (socket) => {
+  if (!agentPool) return;
+  agentPool.streamStatus(socket);
+});
+
+// =====================================================================
 // START SERVER
 // =====================================================================
 
@@ -544,6 +599,13 @@ const PORT = process.env.PORT || 3000;
 try {
   await app.listen({ port: parseInt(String(PORT)), host: '0.0.0.0' });
   console.log(`✅ BOB IDE Backend running on http://localhost:${PORT}`);
+  console.log(`📡 Endpoints ready:`);
+  console.log(`   POST /api/execute (terminal)`);
+  console.log(`   POST /api/lisp/eval (LISP)`);
+  console.log(`   POST /api/mcp/call (models)`);
+  console.log(`   POST /api/agents/execute (orchestration)`);
+  console.log(`   GET /api/worm/chain (WORM)`);
+  console.log(`   WS /api/agents/:id (streaming)`);
 } catch (err) {
   app.log.error(err);
   process.exit(1);
