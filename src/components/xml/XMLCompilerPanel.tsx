@@ -4,7 +4,7 @@
  * Control mini models (Granite, Nemotron, etc.) via XML-derived prompts
  */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 interface CompilationResult {
   mode: string;
@@ -120,7 +120,7 @@ export function XMLCompilerPanel() {
             }}
           >
             <option value="gbnf">GBNF (Grammar-constrained, 100% valid)</option>
-            <option value="skeleton">Skeleton (Fill {{PLACEHOLDERS}})</option>
+            <option value="skeleton">Skeleton (Fill placeholders)</option>
             <option value="dual-pass">Dual-pass (CoT + XML)</option>
           </select>
         </div>

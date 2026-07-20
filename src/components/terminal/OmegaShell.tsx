@@ -6,7 +6,7 @@
  * window.omegaIDE.execute(command) => Promise<{ stdout, stderr, code }>
  */
 
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface OmegaResult {
   stdout: string;
@@ -241,7 +241,7 @@ export function OmegaShell() {
   );
 }
 
-/**
+/*
  * USAGE IN APP:
  *
  * import { OmegaShell } from './components/terminal/OmegaShell';
@@ -249,10 +249,7 @@ export function OmegaShell() {
  * export function App() {
  *   return (
  *     <div>
- *       {/* Your main IDE content */}
  *       <SovereignIDE />
- *
- *       {/* Omega shell at bottom */}
  *       <OmegaShell />
  *     </div>
  *   );

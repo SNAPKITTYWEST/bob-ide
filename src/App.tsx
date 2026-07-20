@@ -2,20 +2,16 @@ import { useEffect, useState } from 'react';
 import { AppShell } from './components/shell/AppShell';
 import { Welcome } from './pages/Welcome';
 import { OmegaShell } from './components/terminal/OmegaShell';
-import { SovereignIDE } from './components/ide/SovereignIDE';
 import { useWorkspaceStore } from './stores/workspace.store';
 import { sovereignIDE } from '../artifacts/SOVEREIGN_IDE_FRAMEWORK';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const [sovereignReady, setSovereignReady] = useState(false);
-  const [showIDE, setShowIDE] = useState(false);
   const { workspaceId, initialize } = useWorkspaceStore();
 
   useEffect(() => {
-    // Initialize Sovereign IDE framework (all BOB components)
+    // Initialize Sovereign IDE framework
     sovereignIDE.initialize().then(() => {
-      setSovereignReady(true);
       console.log('✅ Sovereign IDE Framework loaded');
     });
 
@@ -47,17 +43,7 @@ function App() {
     return <Welcome />;
   }
 
-  // Toggle between Vortex shell (game) and Sovereign IDE (editor)
-  if (showIDE) {
-    return (
-      <div>
-        <SovereignIDE />
-        <OmegaShell />
-      </div>
-    );
-  }
-
-  // Show main Vortex shell (game world)
+  // Show main Vortex shell (game world) with OmegaShell overlay
   return (
     <div>
       <AppShell />

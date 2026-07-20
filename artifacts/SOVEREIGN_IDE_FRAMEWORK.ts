@@ -20,7 +20,6 @@ import {
   PipelineStage,
   WORMTx,
   WORMChain,
-  Permission,
   IsabelleSession,
   GraniteModel,
   WebGPUDevice,
@@ -249,12 +248,13 @@ export class SovereignIDE {
 
   async initWebGPU(): Promise<void> {
     try {
-      if (!navigator.gpu) {
+      const gpuAccess = (navigator as any).gpu;
+      if (!gpuAccess) {
         console.warn("[WebGPU] Not available in this browser");
         return;
       }
 
-      const adapter = await navigator.gpu.requestAdapter();
+      const adapter = await gpuAccess.requestAdapter();
       if (!adapter) {
         console.warn("[WebGPU] No GPU adapter found");
         return;
@@ -310,7 +310,7 @@ export class SovereignIDE {
     const artifact = this.artifactStore.artifacts.get(hash);
     if (!artifact) throw new Error("Artifact not found");
 
-    return new Blob([artifact.content]);
+    return new Blob([artifact.content as BlobPart]);
   }
 
   // ===================================================================
@@ -358,7 +358,7 @@ export class SovereignIDE {
     return finalArtifact;
   }
 
-  private async executeStage(stage: PipelineStage, config: Record<string, unknown>): Promise<QArtifact> {
+  private async executeStage(stage: PipelineStage, _config: Record<string, unknown>): Promise<QArtifact> {
     // Stub: each stage executor handles its domain
     const artifact: QArtifact = {
       hash: this.blake3(stage),
@@ -434,7 +434,6 @@ export class SovereignIDE {
   }
 
   private detectGPUBackend(): "Metal" | "Vulkan" | "DirectX12" | "OpenGL" {
-    // In real impl, check GPU capabilities
     return "Vulkan";
   }
 

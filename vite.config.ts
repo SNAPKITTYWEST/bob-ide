@@ -4,6 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 import path from 'path';
 
 export default defineConfig({
+  base: '/bob-ide/',
   plugins: [
     react(),
     VitePWA({
@@ -13,14 +14,16 @@ export default defineConfig({
         short_name: 'BOB',
         description: 'Sovereign Coding Environment',
         theme_color: '#0A6CFF',
+        scope: '/bob-ide/',
+        start_url: '/bob-ide/',
         icons: [
           {
-            src: '/assets/icons/icon-192.png',
+            src: '/bob-ide/assets/icons/icon-192.png',
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: '/assets/icons/icon-512.png',
+            src: '/bob-ide/assets/icons/icon-512.png',
             sizes: '512x512',
             type: 'image/png'
           }
