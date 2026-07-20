@@ -1,1 +1,6 @@
 node_modules/
+
+# Development scripts (moved to separate repos)
+*.py
+index.html
+
