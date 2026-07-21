@@ -1,5 +1,0 @@
-build/ 
-*.so 
-*.dll 
-*.exe 
-.idea/
