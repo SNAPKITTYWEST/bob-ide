@@ -20,23 +20,18 @@ import {
   ModelControlRequest,
 } from './xml-compiler-bridge';
 
-// Import all 5 backend components (will be created by agents)
-// import { TerminalExecutor } from './executor';
-// import { LispVMBackend } from './lisp-vm';
-// import { MCPRouter } from './mcp-router';
-// import { AgentPool } from './agent-pool';
-// import { WORMChain } from './worm-chain';
+// Import all 5 backend components
+import { executeCommand } from './executor';
+import { lispVM } from './lisp-vm';
+import { routeToMCP } from './mcp-router';
+import { agentPool } from './agent-pool';
+import { wormChain } from './worm-chain';
 
 const app = Fastify({ logger: true });
 const wasmEngine = new WasmEngine();
 
-// INTEGRATION POINTS FOR 5 AGENTS
-// Each agent will populate these
-let terminalExecutor: any;
-let lispVM: any;
-let mcpRouter: any;
-let agentPool: any;
-let wormChain: any;
+// Initialize WORM chain on startup
+await wormChain.initialize();
 
 // Register plugins
 await app.register(fastifyWs);
@@ -556,32 +551,27 @@ app.get<{ Params: { name: string } }>('/api/artifact/:name', async (req, reply) 
 
 // 1. Terminal Executor
 app.post<{ Body: { command: string } }>('/api/execute', async (req) => {
-  if (!terminalExecutor) return { error: 'Terminal executor not ready' };
-  return terminalExecutor.execute(req.body.command);
+  return executeCommand(req.body.command);
 });
 
 // 2. LISP VM Backend
 app.post<{ Body: { sexpr: string; agent_id?: string } }>('/api/lisp/eval', async (req) => {
-  if (!lispVM) return { error: 'LISP VM not ready' };
   return lispVM.eval(req.body.sexpr, req.body.agent_id);
 });
 
 // 3. MCP Router
 app.post<{ Body: { tool: string; function: string; args: any } }>('/api/mcp/call', async (req) => {
-  if (!mcpRouter) return { error: 'MCP router not ready' };
-  return mcpRouter.call(req.body.tool, req.body.function, req.body.args);
+  return routeToMCP(req.body);
 });
 
 // 4. Agent Pool
 app.post<{ Body: { tasks: any[] } }>('/api/agents/execute', async (req) => {
-  if (!agentPool) return { error: 'Agent pool not ready' };
   return agentPool.execute(req.body.tasks);
 });
 
 // 5. WORM Chain Info
 app.get('/api/worm/chain', async () => {
-  if (!wormChain) return { error: 'WORM chain not ready' };
-  return wormChain.getChain();
+  return { ledger: wormChain.getChain().slice(-10) };
 });
 
 // WebSocket: Agent status streaming
