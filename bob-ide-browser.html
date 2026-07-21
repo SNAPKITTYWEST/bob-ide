@@ -295,6 +295,107 @@
       align-items: center;
     }
 
+    /* ===== GAMES PANEL STYLES ===== */
+    .games-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .game-card-mini {
+      background: #1a1f2e;
+      border: 1px solid #2d3e4e;
+      border-radius: 3px;
+      padding: 12px;
+      transition: all 0.2s;
+    }
+    .game-card-mini:hover {
+      border-color: #ffd700;
+      box-shadow: 0 0 12px rgba(255, 215, 0, 0.1);
+      background: #1e2533;
+    }
+
+    .game-card-mini h3 {
+      font-size: 13px;
+      color: #ffd700;
+      margin-bottom: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .game-card-mini .badge-mini {
+      display: inline-block;
+      font-size: 8px;
+      color: #00ff88;
+      border: 1px solid #00ff88;
+      padding: 2px 6px;
+      border-radius: 2px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .game-card-mini .lang {
+      font-size: 9px;
+      color: #00d9cc;
+      margin: 4px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      opacity: 0.85;
+    }
+
+    .game-card-mini .desc {
+      font-size: 10px;
+      color: #c0c0c0;
+      margin: 6px 0;
+      line-height: 1.4;
+    }
+
+    .game-card-mini .links {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .game-card-mini a {
+      font-size: 9px;
+      padding: 4px 8px;
+      border: 1px solid;
+      border-radius: 2px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .game-card-mini .link-gold {
+      color: #ffd700;
+      border-color: #b8860b;
+    }
+    .game-card-mini .link-gold:hover {
+      background: #ffd700;
+      color: #000;
+    }
+
+    .game-card-mini .link-cyan {
+      color: #00d9cc;
+      border-color: #00a09f;
+    }
+    .game-card-mini .link-cyan:hover {
+      background: #00d9cc;
+      color: #000;
+    }
+
+    .game-card-mini .link-grey {
+      color: #888;
+      border-color: #444;
+    }
+    .game-card-mini .link-grey:hover {
+      color: #ffd700;
+      border-color: #ffd700;
+    }
+
     @media (max-width: 1024px) {
       .sidebar { width: 200px; }
       .right-panel { width: 50%; }
@@ -343,6 +444,7 @@
       <div class="panel-tabs">
         <button class="panel-tab active" onclick="switchPanel('terminal')">⌨️ Terminal</button>
         <button class="panel-tab" onclick="switchPanel('agents')">🤖 Agents</button>
+        <button class="panel-tab" onclick="switchPanel('games')">🎮 Games</button>
         <button class="panel-tab" onclick="switchPanel('worm')">🔗 WORM</button>
         <button class="panel-tab" onclick="switchPanel('settings')">⚙️ Settings</button>
       </div>
@@ -384,6 +486,11 @@
             <button onclick="sendToAgent()" style="padding: 6px 12px; background: #00d9cc; border: none; color: #000; cursor: pointer; font-weight: 600; font-size: 10px; border-radius: 2px;">Send</button>
           </div>
         </div>
+      </div>
+
+      <div id="games" class="panel-content">
+        <h3 style="color: #ffd700; margin-bottom: 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">BOB'S GAMES</h3>
+        <div class="games-grid" id="gamesGrid"></div>
       </div>
 
       <div id="worm" class="panel-content">
@@ -433,6 +540,98 @@
       HAIKU: { role: 'Agent Swarm', symbol: '🤖', group: 'COMPUTE', trust: 0.99, status: 'active' },
     };
 
+    // ===== BOB'S GAMES =====
+    const GAMES = [
+      {
+        name: 'BOB SNAKE',
+        status: 'LIVE',
+        lang: 'Python/tkinter · MIT · WORM',
+        desc: 'Canonical Windows-ready Snake with gold snake, red food, increasing speed, high score tracking.',
+        links: [
+          { text: 'Download PY', url: 'https://github.com/SNAPKITTYWEST/bobs-games/raw/main/snake/bob_snake.py', type: 'gold' },
+          { text: 'Source', url: 'https://github.com/SNAPKITTYWEST/bobs-games/tree/main/snake', type: 'grey' },
+        ]
+      },
+      {
+        name: 'BOB SIMS',
+        status: 'LIVE',
+        lang: 'Python/tkinter · WORM State',
+        desc: 'Sovereign NPC life sim. 12 agents, 6 needs, 6 rooms. Every state change is WORM sealed.',
+        links: [
+          { text: 'Download PY', url: 'https://github.com/SNAPKITTYWEST/bobs-games/raw/main/sims/bob_sims.py', type: 'gold' },
+          { text: 'Source', url: 'https://github.com/SNAPKITTYWEST/bobs-games/tree/main/sims', type: 'grey' },
+        ]
+      },
+      {
+        name: 'BOB PARALLIVE',
+        status: 'LIVE',
+        lang: 'Python · Threading · WORM',
+        desc: 'Concurrent multi-agent life. Each NPC runs its own thread. Up to 12 simultaneous agents.',
+        links: [
+          { text: 'Download PY', url: 'https://github.com/SNAPKITTYWEST/bobs-games/raw/main/parallive/bob_parallive.py', type: 'gold' },
+          { text: 'Source', url: 'https://github.com/SNAPKITTYWEST/bobs-games/tree/main/parallive', type: 'grey' },
+        ]
+      },
+      {
+        name: 'BOB TERRARIA',
+        status: 'LIVE',
+        lang: 'Browser · Canvas · Procgen',
+        desc: '2D side-scroller with procedural generation. Mine ore, place blocks, dig caves. Play in browser.',
+        links: [
+          { text: 'Play Now', url: 'https://SNAPKITTYWEST.github.io/bobs-games/terraria/bob_terraria.html', type: 'gold' },
+          { text: 'Source', url: 'https://github.com/SNAPKITTYWEST/bobs-games/tree/main/terraria', type: 'grey' },
+        ]
+      },
+      {
+        name: 'BOB MINECRAFT',
+        status: 'LIVE',
+        lang: 'Python/pygame · Voxel · First-Person',
+        desc: 'First-person voxel world with raycaster, 64×24×64 terrain, mining & placing, collision.',
+        links: [
+          { text: 'Download PY', url: 'https://github.com/SNAPKITTYWEST/bobs-games/raw/main/minecraft/bob_minecraft.py', type: 'gold' },
+          { text: 'Source', url: 'https://github.com/SNAPKITTYWEST/bobs-games/tree/main/minecraft', type: 'grey' },
+        ]
+      },
+      {
+        name: 'BOB CHESS',
+        status: 'LIVE',
+        lang: 'Browser · Legal Moves · Mesh AI',
+        desc: 'Play chess against THE MESH. Legal move gate, depth-limited evaluator, every ply WORM sealed.',
+        links: [
+          { text: 'Play Now', url: 'https://SNAPKITTYWEST.github.io/bobs-games/chess/bob_chess.html', type: 'gold' },
+          { text: 'Source', url: 'https://github.com/SNAPKITTYWEST/bobs-games/tree/main/chess', type: 'grey' },
+        ]
+      },
+      {
+        name: 'BOB WORLD',
+        status: 'LIVE',
+        lang: 'Sovereign Metaverse',
+        desc: 'All worlds in one dashboard. Sealed avatar walks through portals. One WORM chain across all.',
+        links: [
+          { text: 'Enter World', url: 'https://SNAPKITTYWEST.github.io/bobs-games/world/bob_world.html', type: 'gold' },
+          { text: 'GitHub', url: 'https://github.com/SNAPKITTYWEST/bobs-games', type: 'grey' },
+        ]
+      },
+      {
+        name: 'BOB VORTEX ENGINE',
+        status: 'LIVE',
+        lang: 'x86 NASM COM · Browser',
+        desc: 'DOOM-style raycaster engine. Compact VGA Mode 13h DOS COM plus playable browser raycaster.',
+        links: [
+          { text: 'Open Engine', url: 'https://github.com/SNAPKITTYWEST/bob-engine', type: 'gold' },
+        ]
+      },
+      {
+        name: 'BOB TETRIS',
+        status: 'COMING',
+        lang: 'x86-64 NASM',
+        desc: 'Tetris in pure assembly. Piece rotation via bit manipulation. Line clear with SIMD.',
+        links: [
+          { text: 'Watch Repo', url: 'https://github.com/SNAPKITTYWEST/bobs-games', type: 'grey' },
+        ]
+      },
+    ];
+
     // ===== STATE =====
     const state = {
       files: JSON.parse(localStorage.getItem('bob_files') || '{}'),
@@ -455,6 +654,7 @@
       updateStorageInfo();
       loadSettings();
       renderAgents();
+      renderGames();
     }
 
     // ===== AGENT RENDERING =====
@@ -499,6 +699,26 @@
             <div style="font-size: 10px; color: #d4d4d4; margin-top: 3px;">${agent.role}</div>
           </div>
         `).join('');
+    }
+
+    function renderGames() {
+      const grid = document.getElementById('gamesGrid');
+      grid.innerHTML = GAMES.map(game => {
+        const badgeColor = game.status === 'LIVE' ? '#00ff88' : '#888';
+        const links = game.links.map(link => {
+          const typeClass = link.type === 'gold' ? 'link-gold' : link.type === 'cyan' ? 'link-cyan' : 'link-grey';
+          return `<a href="${link.url}" target="_blank" rel="noopener" class="${typeClass}">${link.text}</a>`;
+        }).join('');
+        return `
+          <div class="game-card-mini">
+            <span class="badge-mini">${game.status}</span>
+            <h3>${game.name}</h3>
+            <div class="lang">${game.lang}</div>
+            <div class="desc">${game.desc}</div>
+            <div class="links">${links}</div>
+          </div>
+        `;
+      }).join('');
     }
 
     function selectAgent(name) {
