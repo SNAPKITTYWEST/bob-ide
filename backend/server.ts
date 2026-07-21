@@ -86,7 +86,7 @@ app.delete<{ Params: { id: string } }>('/api/terminal/:id', async (req) => {
 
 app.post<{
   Body: { sessionId: string; cmd: string; cwd?: string };
-}>('/api/execute', async (req, reply) => {
+}>('/api/session/execute', async (req, reply) => {
   const { sessionId, cmd, cwd: newCwd } = req.body;
   const session = sessions.get(sessionId);
 

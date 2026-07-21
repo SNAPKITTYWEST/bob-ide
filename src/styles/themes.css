@@ -40,42 +40,49 @@
 }
 
 [data-theme="dark"] {
-  /* Backgrounds */
-  --bg-canvas: #101114;
-  --bg-workspace: #131519;
-  --bg-panel: rgba(28,30,35,0.84);
-  --bg-panel-solid: #1B1D22;
-  --bg-elevated: #23262C;
-  --bg-editor: #15171B;
-  --bg-terminal: #0B0D10;
-  --bg-hover: rgba(255,255,255,0.055);
-  --bg-selected: rgba(66,139,255,0.18);
-  --bg-active: rgba(66,139,255,0.25);
+  /* Backgrounds - Cypherpunk Dark */
+  --bg-canvas: #0a0e14;
+  --bg-workspace: #0f1319;
+  --bg-panel: rgba(15,19,30,0.65);
+  --bg-panel-solid: #12151f;
+  --bg-elevated: #1a1e2e;
+  --bg-editor: #0d101a;
+  --bg-terminal: #050709;
+  --bg-hover: rgba(0,212,204,0.08);
+  --bg-selected: rgba(0,212,204,0.15);
+  --bg-active: rgba(0,212,204,0.25);
 
   /* Text */
-  --text-primary: #F4F5F7;
-  --text-secondary: #B6BBC5;
-  --text-tertiary: #7F8692;
-  --text-disabled: #555B65;
-  --text-inverse: #17191D;
+  --text-primary: #e8f0ff;
+  --text-secondary: #a8b5c8;
+  --text-tertiary: #6f7a8f;
+  --text-disabled: #4a5268;
+  --text-inverse: #0a0e14;
 
-  /* Borders */
-  --border-subtle: rgba(255,255,255,0.09);
-  --border-strong: rgba(255,255,255,0.16);
+  /* Borders - Quantum neon */
+  --border-subtle: rgba(0,212,204,0.12);
+  --border-strong: rgba(0,212,204,0.24);
 
-  /* Accents */
-  --accent-primary: #4A91FF;
-  --accent-secondary: #9B89FF;
-  --success: #46B878;
-  --warning: #E5A33D;
-  --danger: #F06161;
-  --info: #53A7E8;
+  /* Accents - Quantum Neon Palette */
+  --accent-primary: #00d4cc;
+  --accent-secondary: #c74dff;
+  --accent-tertiary: #ffd700;
+  --success: #00ff88;
+  --warning: #ffb84d;
+  --danger: #ff4466;
+  --info: #00d4ff;
+
+  /* Glow colors */
+  --glow-cyan: #00d4cc;
+  --glow-purple: #c74dff;
+  --glow-green: #00ff88;
+  --glow-orange: #ffa500;
 
   /* Semantic */
-  --git-added: #46B878;
-  --git-modified: #E5A33D;
-  --git-deleted: #F06161;
-  --git-conflict: #9B89FF;
+  --git-added: #00ff88;
+  --git-modified: #ffb84d;
+  --git-deleted: #ff4466;
+  --git-conflict: #c74dff;
 }
 
 /* Default to dark theme */

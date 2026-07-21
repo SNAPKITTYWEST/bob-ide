@@ -1,0 +1,649 @@
+/* BOB IDE — Component Styles (Production Grade) */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   VORTEX SHELL — Main container
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.vortex-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(135deg, #0a0e14 0%, #0f1319 50%, #12151f 100%);
+  color: var(--text-primary);
+  font-family: var(--font-code);
+  font-size: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TITLEBAR — Top navigation
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.v-bar {
+  height: 36px;
+  background: linear-gradient(to right,
+    rgba(15, 19, 30, 0.8),
+    rgba(15, 19, 30, 0.6));
+  border-bottom: 1px solid rgba(0, 212, 204, 0.15);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  gap: 12px;
+  flex-shrink: 0;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Window control buttons */
+.v-dots {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.dot-r, .dot-y, .dot-g {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.dot-r {
+  background: linear-gradient(135deg, #ff5f57, #ff3b3d);
+}
+
+.dot-y {
+  background: linear-gradient(135deg, #febc2e, #ffaa00);
+}
+
+.dot-g {
+  background: linear-gradient(135deg, #28c840, #00d688);
+}
+
+.dot-r:hover, .dot-y:hover, .dot-g:hover {
+  transform: scale(1.15);
+}
+
+.v-title {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-weight: 600;
+  text-shadow: 0 0 8px rgba(0, 212, 204, 0.2);
+}
+
+/* Tab navigation */
+.v-tabs {
+  display: flex;
+  gap: 0;
+  margin-left: auto;
+  align-items: center;
+}
+
+.v-tab {
+  height: 36px;
+  padding: 0 16px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-tertiary);
+  font-size: 11px;
+  font-family: inherit;
+  cursor: pointer;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: all var(--time-fast) var(--ease-in-out);
+  position: relative;
+}
+
+.v-tab::before {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--quantum-cyan), transparent);
+  opacity: 0;
+  transition: opacity var(--time-fast) var(--ease-in-out);
+}
+
+.v-tab:hover {
+  color: var(--quantum-cyan);
+  background: rgba(0, 212, 204, 0.05);
+}
+
+.v-tab.on {
+  color: var(--quantum-cyan);
+  border-bottom-color: var(--quantum-cyan);
+  background: rgba(0, 212, 204, 0.08);
+  box-shadow: inset 0 -2px 8px rgba(0, 212, 204, 0.1);
+  text-shadow: 0 0 8px rgba(0, 212, 204, 0.4);
+}
+
+/* HUD metrics */
+.v-hud {
+  display: flex;
+  gap: 20px;
+  margin-left: 20px;
+  align-items: center;
+  padding-left: 12px;
+  border-left: 1px solid rgba(0, 212, 204, 0.15);
+}
+
+.hud-item {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all var(--time-fast) var(--ease-in-out);
+}
+
+.hud-item:hover {
+  color: var(--quantum-cyan);
+  text-shadow: 0 0 8px rgba(0, 212, 204, 0.5);
+  transform: scale(1.05);
+}
+
+.hud-item b {
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: inherit;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MAIN LAYOUT — Content area
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.v-main {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  gap: 0;
+}
+
+.v-center {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: linear-gradient(to bottom,
+    rgba(15, 19, 30, 0.3),
+    rgba(12, 15, 22, 0.5));
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CANVAS — 3D world view
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.v-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+  background: linear-gradient(to bottom,
+    #020610 0%,
+    #071827 30%,
+    #0a1028 100%);
+  position: relative;
+  box-shadow: inset 0 0 40px rgba(0, 212, 204, 0.1);
+}
+
+.v-canvas::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.1),
+    rgba(0, 0, 0, 0.1) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CODE PANEL — Monaco editor container
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.v-code-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: linear-gradient(to bottom,
+    rgba(15, 19, 30, 0.3),
+    rgba(12, 15, 22, 0.5));
+}
+
+.v-code-header {
+  height: 32px;
+  background: linear-gradient(to right,
+    rgba(15, 19, 30, 0.6),
+    rgba(15, 19, 30, 0.4));
+  border-bottom: 1px solid rgba(0, 212, 204, 0.15);
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  gap: 10px;
+  flex-shrink: 0;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.v-code-header span:first-child {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+}
+
+.v-code-placeholder {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--text-tertiary);
+  padding: 40px;
+  text-align: center;
+}
+
+.v-code-placeholder > div:first-child {
+  color: var(--quantum-cyan);
+  font-size: 16px;
+  font-weight: 600;
+  text-shadow: 0 0 12px rgba(0, 212, 204, 0.4);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   QUANTUM METRICS — Engine statistics
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.v-quantum-metrics {
+  height: 36px;
+  background: linear-gradient(to right,
+    rgba(15, 19, 30, 0.6),
+    rgba(15, 19, 30, 0.4));
+  border-top: 1px solid rgba(0, 212, 204, 0.15);
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  gap: 24px;
+  flex-shrink: 0;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-size: 10px;
+  color: var(--text-tertiary);
+  overflow-x: auto;
+}
+
+.v-quantum-metrics::-webkit-scrollbar {
+  height: 4px;
+}
+
+.v-quantum-metrics::-webkit-scrollbar-thumb {
+  background: rgba(0, 212, 204, 0.2);
+  border-radius: 2px;
+}
+
+.v-quantum-metrics b {
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  margin-left: 4px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RIGHT PANEL — Sidebar (minimap, agents, chat)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.v-right {
+  width: 280px;
+  flex-shrink: 0;
+  background: linear-gradient(to right,
+    rgba(15, 19, 30, 0.7),
+    rgba(15, 19, 30, 0.6));
+  border-left: 1px solid rgba(0, 212, 204, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: inset 2px 0 8px rgba(0, 212, 204, 0.05);
+}
+
+/* Section headers */
+.v-section-hdr {
+  height: 28px;
+  padding: 0 12px;
+  font-size: 9px;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 1.8px;
+  border-bottom: 1px solid rgba(0, 212, 204, 0.12);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  background: rgba(0, 212, 204, 0.03);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MINIMAP — World overview
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.v-mini {
+  width: 100%;
+  display: block;
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(0, 212, 204, 0.12);
+  background: rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 0 12px rgba(0, 212, 204, 0.05);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   AGENT ROSTER
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.v-agents {
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(0, 212, 204, 0.12);
+  flex-shrink: 0;
+  overflow-y: auto;
+  max-height: 140px;
+}
+
+.v-agents::-webkit-scrollbar {
+  width: 4px;
+}
+
+.v-agents::-webkit-scrollbar-thumb {
+  background: rgba(0, 212, 204, 0.2);
+  border-radius: 2px;
+}
+
+.v-agent-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  margin-bottom: 4px;
+  border-radius: 4px;
+  transition: all var(--time-fast) var(--ease-in-out);
+}
+
+.v-agent-row:hover {
+  background: rgba(0, 212, 204, 0.1);
+  transform: translateX(2px);
+}
+
+.v-agent-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 8px rgba(0, 212, 204, 0.3);
+  animation: pulse-opacity 2s ease-in-out infinite;
+}
+
+.v-agent-name {
+  font-size: 10px;
+  color: var(--text-primary);
+  font-weight: 700;
+  width: 50px;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.v-agent-role {
+  font-size: 9px;
+  color: var(--text-tertiary);
+  flex: 1;
+  text-transform: capitalize;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   AGENT DIALOGUE LOG
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.v-dialogue {
+  height: 110px;
+  overflow-y: auto;
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(0, 212, 204, 0.12);
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.v-dialogue::-webkit-scrollbar {
+  width: 4px;
+}
+
+.v-dialogue::-webkit-scrollbar-thumb {
+  background: rgba(0, 212, 204, 0.2);
+  border-radius: 2px;
+}
+
+.v-line {
+  font-size: 9px;
+  line-height: 1.4;
+  margin-bottom: 4px;
+  color: var(--text-tertiary);
+  padding: 3px 6px;
+  border-radius: 3px;
+  border-left: 2px solid transparent;
+  animation: slide-in-left var(--time-normal) var(--ease-out-cubic);
+}
+
+.v-line.good {
+  color: var(--quantum-green);
+  background: rgba(0, 255, 136, 0.08);
+  border-left-color: var(--quantum-green);
+  text-shadow: 0 0 6px rgba(0, 255, 136, 0.3);
+}
+
+.v-line.bad {
+  color: var(--quantum-red);
+  background: rgba(255, 68, 102, 0.08);
+  border-left-color: var(--quantum-red);
+  text-shadow: 0 0 6px rgba(255, 68, 102, 0.3);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CHAT INTERFACE — BOB Oracle
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.v-api-input {
+  width: 100%;
+  background: rgba(0, 212, 204, 0.08);
+  border: 1px solid rgba(0, 212, 204, 0.2);
+  color: var(--text-primary);
+  padding: 6px 10px;
+  font-size: 9px;
+  font-family: inherit;
+  outline: none;
+  flex-shrink: 0;
+  border-radius: 4px;
+  margin: 6px 10px;
+  transition: all var(--time-fast) var(--ease-in-out);
+}
+
+.v-api-input::placeholder {
+  color: var(--text-disabled);
+}
+
+.v-api-input:focus {
+  border-color: var(--quantum-cyan);
+  background: rgba(0, 212, 204, 0.12);
+  box-shadow: 0 0 12px rgba(0, 212, 204, 0.3);
+}
+
+.v-chat {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  min-height: 0;
+}
+
+.v-chat::-webkit-scrollbar {
+  width: 4px;
+}
+
+.v-chat::-webkit-scrollbar-thumb {
+  background: rgba(0, 212, 204, 0.2);
+  border-radius: 2px;
+}
+
+.v-chat-msg {
+  font-size: 10px;
+  line-height: 1.5;
+  word-break: break-word;
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  animation: fade-in var(--time-normal) var(--ease-in-out);
+}
+
+.v-chat-msg.bot {
+  color: var(--text-primary);
+}
+
+.v-chat-msg.user {
+  color: var(--quantum-cyan);
+}
+
+.v-chat-prefix {
+  flex-shrink: 0;
+  color: var(--quantum-purple);
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.v-chat-input-row {
+  display: flex;
+  gap: 6px;
+  padding: 8px 10px;
+  background: rgba(0, 212, 204, 0.05);
+  border-top: 1px solid rgba(0, 212, 204, 0.15);
+  flex-shrink: 0;
+}
+
+.v-chat-input {
+  flex: 1;
+  background: rgba(0, 212, 204, 0.08);
+  border: 1px solid rgba(0, 212, 204, 0.2);
+  color: var(--text-primary);
+  padding: 6px 8px;
+  font-size: 10px;
+  font-family: inherit;
+  border-radius: 4px;
+  outline: none;
+  resize: none;
+  transition: all var(--time-fast) var(--ease-in-out);
+  max-height: 80px;
+}
+
+.v-chat-input:focus {
+  border-color: var(--quantum-cyan);
+  background: rgba(0, 212, 204, 0.12);
+  box-shadow: inset 0 0 8px rgba(0, 212, 204, 0.1);
+}
+
+.v-chat-input::placeholder {
+  color: var(--text-disabled);
+}
+
+.v-send-btn {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--quantum-cyan), rgba(0, 212, 204, 0.7));
+  border: 1px solid rgba(0, 212, 204, 0.4);
+  color: #000;
+  font-size: 16px;
+  font-weight: 900;
+  cursor: pointer;
+  border-radius: 4px;
+  flex-shrink: 0;
+  transition: all var(--time-fast) var(--ease-in-out);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 12px rgba(0, 212, 204, 0.3);
+}
+
+.v-send-btn:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0, 212, 204, 0.5);
+}
+
+.v-send-btn:active {
+  transform: scale(0.95);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   STATUS BAR — Bottom info
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.v-status {
+  height: 24px;
+  background: linear-gradient(to right,
+    rgba(15, 19, 30, 0.8),
+    rgba(15, 19, 30, 0.6));
+  border-top: 1px solid rgba(0, 212, 204, 0.15);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  gap: 16px;
+  flex-shrink: 0;
+  font-size: 9px;
+  color: var(--text-tertiary);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: inset 0 1px 0 rgba(0, 212, 204, 0.1);
+}
+
+.v-status span:first-child {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.v-status span:nth-child(2) {
+  color: var(--quantum-cyan);
+  font-variant-numeric: tabular-nums;
+  font-family: monospace;
+  text-shadow: 0 0 6px rgba(0, 212, 204, 0.4);
+}
+
+.v-status span:last-child {
+  margin-left: auto;
+  color: var(--text-disabled);
+}
+
+/* Made with Bob */

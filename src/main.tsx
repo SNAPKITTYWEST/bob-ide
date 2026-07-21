@@ -6,6 +6,10 @@ import './styles/themes.css';
 import './styles/reset.css';
 import './styles/typography.css';
 import './styles/layout.css';
+import './styles/global.css';
+import './styles/animations.css';
+import './styles/components.css';
+import './styles/responsive.css';
 
 // Initialize theme from localStorage or system preference
 const initTheme = () => {
