@@ -444,6 +444,7 @@
       <div class="panel-tabs">
         <button class="panel-tab active" onclick="switchPanel('terminal')">⌨️ Terminal</button>
         <button class="panel-tab" onclick="switchPanel('agents')">🤖 Agents</button>
+        <button class="panel-tab" onclick="switchPanel('art')">🎨 Art</button>
         <button class="panel-tab" onclick="switchPanel('games')">🎮 Games</button>
         <button class="panel-tab" onclick="switchPanel('worm')">🔗 WORM</button>
         <button class="panel-tab" onclick="switchPanel('settings')">⚙️ Settings</button>
@@ -485,6 +486,21 @@
             <input id="agentInput" type="text" placeholder="Ask an agent..." style="flex: 1; background: #1a1f2e; border: 1px solid #2d3e4e; color: #d4d4d4; padding: 6px; font-family: inherit; font-size: 11px; border-radius: 2px;" onkeypress="handleAgentInput(event)">
             <button onclick="sendToAgent()" style="padding: 6px 12px; background: #00d9cc; border: none; color: #000; cursor: pointer; font-weight: 600; font-size: 10px; border-radius: 2px;">Send</button>
           </div>
+        </div>
+      </div>
+
+      <div id="art" class="panel-content">
+        <h3 style="color: #00d9cc; margin-bottom: 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">🎨 Algorithmic Art</h3>
+        <canvas id="artCanvas" width="320" height="300" style="border: 1px solid #1e3a3a; background: #0a0f1a; display: block; margin-bottom: 8px; border-radius: 3px;"></canvas>
+        <div style="display: flex; gap: 6px; margin-bottom: 8px;">
+          <button onclick="generateArt('mandelbrot')" style="flex: 1; padding: 6px; background: #00d9cc; border: none; color: #000; cursor: pointer; font-weight: 600; font-size: 10px; border-radius: 2px;">Mandelbrot</button>
+          <button onclick="generateArt('julia')" style="flex: 1; padding: 6px; background: #00d9cc; border: none; color: #000; cursor: pointer; font-weight: 600; font-size: 10px; border-radius: 2px;">Julia</button>
+          <button onclick="generateArt('glitch')" style="flex: 1; padding: 6px; background: #00d9cc; border: none; color: #000; cursor: pointer; font-weight: 600; font-size: 10px; border-radius: 2px;">Glitch</button>
+        </div>
+        <div style="font-size: 10px; color: #888; line-height: 1.5;">
+          <strong style="color: #00d9cc;">Mandelbrot:</strong> Real-time fractal zoom<br>
+          <strong style="color: #00d9cc;">Julia:</strong> Parameter-space fractals<br>
+          <strong style="color: #00d9cc;">Glitch:</strong> Deterministic pixel art
         </div>
       </div>
 
@@ -699,6 +715,69 @@
             <div style="font-size: 10px; color: #d4d4d4; margin-top: 3px;">${agent.role}</div>
           </div>
         `).join('');
+    }
+
+    function generateArt(type) {
+      const canvas = document.getElementById('artCanvas');
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+      const imageData = ctx.createImageData(w, h);
+      const data = imageData.data;
+
+      if (type === 'mandelbrot') {
+        for (let y = 0; y < h; y++) {
+          for (let x = 0; x < w; x++) {
+            const cr = (x / w) * 3.5 - 2.5;
+            const ci = (y / h) * 2 - 1;
+            let zr = 0, zi = 0, i = 0;
+            while (i < 100 && zr * zr + zi * zi < 4) {
+              const zr2 = zr * zr - zi * zi + cr;
+              zi = 2 * zr * zi + ci;
+              zr = zr2;
+              i++;
+            }
+            const idx = (y * w + x) * 4;
+            const color = (i / 100) * 255;
+            data[idx] = color;
+            data[idx + 1] = (color * 0.8) | 0;
+            data[idx + 2] = (color * 0.6) | 0;
+            data[idx + 3] = 255;
+          }
+        }
+      } else if (type === 'julia') {
+        const c = { r: -0.7, i: 0.27015 };
+        for (let y = 0; y < h; y++) {
+          for (let x = 0; x < w; x++) {
+            let zr = (x / w) * 3 - 1.5;
+            let zi = (y / h) * 3 - 1.5;
+            let i = 0;
+            while (i < 100 && zr * zr + zi * zi < 4) {
+              const zr2 = zr * zr - zi * zi + c.r;
+              zi = 2 * zr * zi + c.i;
+              zr = zr2;
+              i++;
+            }
+            const idx = (y * w + x) * 4;
+            const color = (i / 100) * 255;
+            data[idx] = (color * 0.2) | 0;
+            data[idx + 1] = color;
+            data[idx + 2] = (color * 0.8) | 0;
+            data[idx + 3] = 255;
+          }
+        }
+      } else if (type === 'glitch') {
+        for (let i = 0; i < data.length; i += 4) {
+          const hash = Math.sin(i * 12.9898) * 43758.5453;
+          const noise = hash - Math.floor(hash);
+          data[i] = (noise * 255) | 0;
+          data[i + 1] = ((i % 256) ^ (i >> 8)) % 256;
+          data[i + 2] = ((noise * 256) ^ i) % 256;
+          data[i + 3] = 255;
+        }
+      }
+
+      ctx.putImageData(imageData, 0, 0);
+      sealWormEntry({ type: 'algorithmic-art', algorithm: type });
     }
 
     function renderGames() {
@@ -1085,4 +1164,3 @@
   </script>
 </body>
 </html>
-<!-- Cache bust: 1784603988 -->
