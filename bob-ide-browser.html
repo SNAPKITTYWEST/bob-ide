@@ -361,8 +361,24 @@
           <div id="agentsList" style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;"></div>
         </div>
         <div style="flex: 1; display: flex; flex-direction: column; border-top: 1px solid #1e3a3a; padding-top: 8px;">
-          <h3 style="color: #00d9cc; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Chat</h3>
-          <div id="chatBox" style="flex: 1; background: #0a0f1a; border: 1px solid #1e3a3a; border-radius: 3px; padding: 8px; overflow-y: auto; margin-bottom: 8px; font-size: 11px; line-height: 1.5;"></div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 12px;">
+            <h3 style="color: #00d9cc; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Chat</h3>
+            <div style="display: flex; gap: 12px; font-size: 10px;">
+              <label style="display: flex; align-items: center; gap: 4px; color: #888; cursor: pointer;">
+                <input type="checkbox" id="bashMode" onchange="toggleBashMode()" style="cursor: pointer;">
+                <span>$ BASH</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 4px; color: #888; cursor: pointer;">
+                <input type="checkbox" id="grepMode" onchange="toggleGrepMode()" style="cursor: pointer;">
+                <span>🔍 GREP</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 4px; color: #888; cursor: pointer;">
+                <input type="checkbox" id="curlMode" onchange="toggleCurlMode()" style="cursor: pointer;">
+                <span>🌐 CURL</span>
+              </label>
+            </div>
+          </div>
+          <div id="chatBox" style="flex: 1; background: #0a0f1a; border: 1px solid #1e3a3a; border-radius: 3px; padding: 8px; overflow-y: auto; margin-bottom: 8px; font-size: 11px; line-height: 1.5; font-family: monospace;"></div>
           <div style="display: flex; gap: 4px;">
             <input id="agentInput" type="text" placeholder="Ask an agent..." style="flex: 1; background: #1a1f2e; border: 1px solid #2d3e4e; color: #d4d4d4; padding: 6px; font-family: inherit; font-size: 11px; border-radius: 2px;" onkeypress="handleAgentInput(event)">
             <button onclick="sendToAgent()" style="padding: 6px 12px; background: #00d9cc; border: none; color: #000; cursor: pointer; font-weight: 600; font-size: 10px; border-radius: 2px;">Send</button>
@@ -443,6 +459,33 @@
 
     // ===== AGENT RENDERING =====
     let currentAgent = 'BOB';
+    let bashMode = false;
+    let grepMode = false;
+    let curlMode = false;
+
+    function toggleBashMode() {
+      bashMode = document.getElementById('bashMode').checked;
+      const chatBox = document.getElementById('chatBox');
+      if (bashMode) {
+        chatBox.innerHTML += `<div style="color: #00dd00; margin-top: 8px; padding-top: 8px; border-top: 1px solid #1e3a3a;">$ BASH MODE - commands: ls, pwd, whoami, cat, worm, grep, clear</div>`;
+      }
+    }
+
+    function toggleGrepMode() {
+      grepMode = document.getElementById('grepMode').checked;
+      const chatBox = document.getElementById('chatBox');
+      if (grepMode) {
+        chatBox.innerHTML += `<div style="color: #00d9cc; margin-top: 8px; padding-top: 8px; border-top: 1px solid #1e3a3a;">🔍 GREP MODE - search all files for pattern</div>`;
+      }
+    }
+
+    function toggleCurlMode() {
+      curlMode = document.getElementById('curlMode').checked;
+      const chatBox = document.getElementById('chatBox');
+      if (curlMode) {
+        chatBox.innerHTML += `<div style="color: #00d9cc; margin-top: 8px; padding-top: 8px; border-top: 1px solid #1e3a3a;">🌐 CURL MODE - HTTP requests (simulated)</div>`;
+      }
+    }
 
     function renderAgents() {
       const list = document.getElementById('agentsList');
@@ -473,29 +516,99 @@
       const chatBox = document.getElementById('chatBox');
       const agent = AGENTS[currentAgent];
 
-      chatBox.innerHTML += `<div style="margin-bottom: 6px;"><span style="color: #00d9cc;">You:</span> ${msg}</div>`;
+      if (grepMode) {
+        // GREP MODE
+        chatBox.innerHTML += `<div style="margin-bottom: 6px; color: #00d9cc;">🔍 grep: ${msg}</div>`;
+        const matches = [];
+        Object.entries(state.files).forEach(([file, content]) => {
+          content.split('\\n').forEach((line, i) => {
+            if (line.toLowerCase().includes(msg.toLowerCase())) {
+              matches.push(`${file}:${i + 1}: ${line}`);
+            }
+          });
+        });
+        const output = matches.length ? matches.join('\\n') : `(no matches for "${msg}")`;
+        chatBox.innerHTML += `<div style="margin-bottom: 6px; color: #d4d4d4; white-space: pre-wrap;">${output}</div>`;
+        sealWormEntry({ type: 'grep-search', pattern: msg, results: matches.length });
+      } else if (curlMode) {
+        // CURL MODE
+        chatBox.innerHTML += `<div style="margin-bottom: 6px; color: #00d9cc;">🌐 curl ${msg}</div>`;
+        let output = '';
+        if (msg.includes('github.com')) {
+          output = 'HTTP/1.1 200 OK\\nContent-Type: application/json\\n\\n{"status": "connected to GitHub"}';
+        } else if (msg.includes('bedrock') || msg.includes('aws')) {
+          output = 'HTTP/1.1 200 OK\\nContent-Type: application/json\\n\\n{"model": "Claude Haiku", "status": "ready"}';
+        } else if (msg.includes('api')) {
+          output = 'HTTP/1.1 200 OK\\nContent-Type: application/json\\n\\n{"response": "API connected"}';
+        } else {
+          output = 'HTTP/1.1 404 Not Found\\nContent-Type: text/plain\\n\\nEndpoint not available in browser mode';
+        }
+        chatBox.innerHTML += `<div style="margin-bottom: 6px; color: #d4d4d4; white-space: pre-wrap; font-size: 10px;">${output}</div>`;
+        sealWormEntry({ type: 'curl-request', url: msg });
+      } else if (bashMode) {
+        // BASH IN/OUT mode
+        chatBox.innerHTML += `<div style="margin-bottom: 6px; color: #00dd00;">$ ${msg}</div>`;
 
-      setTimeout(() => {
-        const responses = {
-          'AHMAD': 'Root sovereign confirms. Processing through mesh.',
-          'BOB': 'Orchestration acknowledged. Running parallel verification.',
-          'SENTINEL': 'Threat assessment: nominal. All systems clear.',
-          'CIPHER': 'Encryption layer confirms. Message authenticated.',
-          'VAULT': 'Treasury confirms. Ledger verified.',
-          'ATLAS': 'World model updated with new data.',
-          'ORACLE': 'Prediction engine running. High confidence signal.',
-          'HERALD': 'Message will be broadcast across mesh.',
-          'NOVA': 'Creative synthesis engaged. Novel solution incoming.',
-          'FORGE': 'Minting approved. Transaction sealed.',
-          'RESONANCE': 'S-AUTOCODE pattern detected. Resonance stable.',
-          'HAIKU': 'Agent swarm synchronized. Task distributed across 5 parallel agents.'
-        };
+        // Simulate bash command execution
+        let output = '';
+        if (msg === 'ls' || msg === 'dir') {
+          output = Object.keys(state.files).join('\\n') || '(empty)';
+        } else if (msg === 'pwd') {
+          output = window.location.href;
+        } else if (msg === 'whoami') {
+          output = currentAgent;
+        } else if (msg.startsWith('cat ')) {
+          const file = msg.replace('cat ', '').trim();
+          output = state.files[file] || 'cat: file not found';
+        } else if (msg === 'worm') {
+          output = `WORM Chain (${state.wormChain.length} entries):\\n${state.wormChain.slice(-3).map(e => `${e.hash.slice(0, 16)}... ${e.type}`).join('\\n')}`;
+        } else if (msg.startsWith('grep ')) {
+          const pattern = msg.replace('grep ', '').trim();
+          const matches = [];
+          Object.entries(state.files).forEach(([file, content]) => {
+            content.split('\\n').forEach((line, i) => {
+              if (line.includes(pattern)) {
+                matches.push(`${file}:${i + 1}: ${line}`);
+              }
+            });
+          });
+          output = matches.length ? matches.join('\\n') : '(no matches)';
+        } else if (msg === 'clear') {
+          chatBox.innerHTML = '';
+          return;
+        } else {
+          output = '[command not available in browser]';
+        }
 
-        const response = responses[currentAgent] || 'Processing...';
-        chatBox.innerHTML += `<div style="margin-bottom: 6px; color: #888;"><span style="color: #00dd00;">${currentAgent}:</span> ${response}</div>`;
-        chatBox.scrollTop = chatBox.scrollHeight;
-        sealWormEntry({ type: 'agent-chat', agent: currentAgent, message: msg, response });
-      }, 200);
+        chatBox.innerHTML += `<div style="margin-bottom: 6px; color: #d4d4d4; white-space: pre-wrap;">${output}</div>`;
+        sealWormEntry({ type: 'bash-command', cmd: msg, output });
+      } else {
+        // Normal agent chat mode
+        chatBox.innerHTML += `<div style="margin-bottom: 6px;"><span style="color: #00d9cc;">You:</span> ${msg}</div>`;
+
+        setTimeout(() => {
+          const responses = {
+            'AHMAD': 'Root sovereign confirms. Processing through mesh.',
+            'BOB': 'Orchestration acknowledged. Running parallel verification.',
+            'SENTINEL': 'Threat assessment: nominal. All systems clear.',
+            'CIPHER': 'Encryption layer confirms. Message authenticated.',
+            'VAULT': 'Treasury confirms. Ledger verified.',
+            'ATLAS': 'World model updated with new data.',
+            'ORACLE': 'Prediction engine running. High confidence signal.',
+            'HERALD': 'Message will be broadcast across mesh.',
+            'NOVA': 'Creative synthesis engaged. Novel solution incoming.',
+            'FORGE': 'Minting approved. Transaction sealed.',
+            'RESONANCE': 'S-AUTOCODE pattern detected. Resonance stable.',
+            'HAIKU': 'Agent swarm synchronized. Task distributed across 5 parallel agents.'
+          };
+
+          const response = responses[currentAgent] || 'Processing...';
+          chatBox.innerHTML += `<div style="margin-bottom: 6px; color: #888;"><span style="color: #00dd00;">${currentAgent}:</span> ${response}</div>`;
+          sealWormEntry({ type: 'agent-chat', agent: currentAgent, message: msg, response });
+        }, 200);
+      }
+
+      chatBox.scrollTop = chatBox.scrollHeight;
     }
 
     function handleAgentInput(e) {
